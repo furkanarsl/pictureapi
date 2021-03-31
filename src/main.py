@@ -6,13 +6,24 @@ from src.api.v1.api import api_router
 from fastapi_jwt_auth import AuthJWT
 from fastapi_jwt_auth.exceptions import AuthJWTException
 from src.core.config import settings
+from tortoise.contrib.fastapi import register_tortoise
 
 app = FastAPI()
 app.include_router(api_router, prefix=settings.API_V1_STR)
 
+register_tortoise(
+    app,
+    db_url=settings.SQLALCHEMY_DATABASE_URI,
+    modules={"models": ["src.models"]},
+    generate_schemas=False,
+    add_exception_handlers=True,
+)
+
+
 @app.get("/")
 def hello():
     return "Hello World!"
+
 
 @AuthJWT.load_config
 def get_config():

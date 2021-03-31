@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     authjwt_secret_key: str = "56691a33a3124999f6a896e2812d9d9f7f5eabc33c1cc56b" # TODO move to .env
     authjwt_access_token_expires: timedelta = timedelta(hours=3)
     authjwt_refresh_token_expires: timedelta = timedelta(days=30)
-    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = 'postgresql://furkana:0071@localhost:5432/postgres' # TODO move to .env
+    SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = 'postgres://furkana:0071@localhost:5432/postgres' # TODO move to .env
+
 
 settings = Settings()

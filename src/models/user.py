@@ -1,11 +1,20 @@
-from sqlalchemy import Boolean, Column, Integer, String
-from src.core.db.base_class import Base
+from tortoise.contrib.pydantic import pydantic_model_creator
+from tortoise.models import Model
+from tortoise import fields
 
 
-class User(Base):
-    id = Column(Integer, primary_key=True, nullable=False)
-    full_name = Column(String)
-    email = Column(String, unique=True, index=True, nullable=False)
-    hashed_password = Column(String, nullable=False)
-    is_active = Column(Boolean(), default=True)
-    is_superuser = Column(Boolean(), default=False)
+class User(Model):
+    id = fields.IntField(pk=True, null=False)
+    full_name = fields.TextField(null=True)
+    email = fields.CharField(max_length=100,
+                             unique=True, index=True, null=False)
+    hashed_password = fields.TextField(null=False)
+    is_active = fields.BooleanField(default=True)
+    is_superuser = fields.BooleanField(default=False)
+
+    class PydanticMeta:
+        exclude = ["is_superuser"]
+
+
+User_Pydantic = pydantic_model_creator(User, name="User")
+UserIn_Pydantic = pydantic_model_creator(User, name="UserIn", exclude_readonly=True)
