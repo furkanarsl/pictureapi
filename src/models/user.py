@@ -1,4 +1,3 @@
-from tortoise.contrib.pydantic import pydantic_model_creator
 from tortoise.models import Model
 from tortoise import fields
 
@@ -14,7 +13,3 @@ class User(Model):
 
     class PydanticMeta:
         exclude = ["is_superuser"]
-
-
-User_Pydantic = pydantic_model_creator(User, name="User")
-UserIn_Pydantic = pydantic_model_creator(User, name="UserIn", exclude_readonly=True)

@@ -1,6 +1,6 @@
 from typing import Optional
-
 from pydantic import BaseModel, EmailStr
+from tortoise.contrib.pydantic import pydantic_model_creator
 
 
 # Shared properties
@@ -38,3 +38,6 @@ class User(UserInDBBase):
 # Additional properties stored in DB
 class UserInDB(UserInDBBase):
     hashed_password: str
+
+
+# User_Pydantic = pydantic_model_creator(User, name="User")

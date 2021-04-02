@@ -3,7 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
-from src.models.user import UserIn_Pydantic, User_Pydantic
+from src.schemas.user import UserCreate, UserBase
 from fastapi_jwt_auth import AuthJWT
 from src.services.user import user_service
 
@@ -30,10 +30,10 @@ async def refresh(Authorize: AuthJWT = Depends()):
     return {"access_token": new_access_token}
 
 
-@router.post("/register")
-async def register(user_in: UserIn_Pydantic):
+@router.post("/register", response_model=UserBase)
+async def register(user_in: UserCreate):
     user = await user_service.get_by_email(user_in.email)
     if user:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already exists.")
-    user = user_service.create(user_in)
+    user = await user_service.create(user_in)
     return user
