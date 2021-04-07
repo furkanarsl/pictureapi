@@ -21,14 +21,13 @@ register_tortoise(
 )
 
 
-@app.websocket("/ws")
+@app.websocket_route("/ws")
 async def websock(websocket: WebSocket):
     await websocket.accept()
-    while True:
-        data = await websocket.receive_bytes()
+    while data := await websocket.receive_bytes():
         async with aiofiles.open('output.png', "+wb") as out_file:
             await out_file.write(data)
-        await websocket.send_text("recieved")
+    await websocket.send_text("recieved")
 
 
 @app.get("/")

@@ -12,22 +12,28 @@ router = APIRouter()
 
 @router.post("/login")
 async def login(form_data: OAuth2PasswordRequestForm = Depends(),
-                Authorize: AuthJWT = Depends()):
+                authorize: AuthJWT = Depends()):
     username = form_data.username
     password = form_data.password
-    if not user_service.authenticate(username, password):
+    if not await user_service.authenticate(username, password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong username or password")
-    access_token = Authorize.create_access_token(subject=username)
-    refresh_token = Authorize.create_refresh_token(subject=username)
+    access_token = authorize.create_access_token(subject=username)
+    refresh_token = authorize.create_refresh_token(subject=username)
     return JSONResponse({"access_token": access_token, "refresh_token": refresh_token}, status_code=status.HTTP_200_OK)
 
 
 @router.post("/refresh")
-async def refresh(Authorize: AuthJWT = Depends()):
-    Authorize.jwt_refresh_token_required()
-    current_user = Authorize.get_jwt_subject()
-    new_access_token = Authorize.create_access_token(subject=current_user)
+async def refresh(authorize: AuthJWT = Depends()):
+    authorize.jwt_refresh_token_required()
+    current_user = authorize.get_jwt_subject()
+    new_access_token = authorize.create_access_token(subject=current_user)
     return {"access_token": new_access_token}
+
+
+@router.get("/verify-token")
+async def verify(authorize: AuthJWT = Depends()):
+    authorize.jwt_required()
+    return {"Result": "OK"}
 
 
 @router.post("/register", response_model=UserBase)
