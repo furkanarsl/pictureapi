@@ -7,11 +7,11 @@ router = APIRouter()
 
 
 @router.post("/upload")
-async def file_upload(file: UploadFile = File(...), file_hash: str = Form(...)):
-    file_extension = file.filename.split(".")[1]
+async def file_upload(file: UploadFile = File(...)):
+    file_name, file_extension = file.filename.split(".")
     if file_extension not in ALLOWED_EXTENSIONS:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="File type not allowed.")
-    save_path = file_hash + "." + file_extension
+    save_path = file_name + "." + file_extension
     async with aiofiles.open(save_path, 'wb') as out_file:
         while content := await file.read(4096):
             await out_file.write(content)
