@@ -13,5 +13,4 @@ class Settings(BaseSettings):
     SQLALCHEMY_DATABASE_URI: PostgresDsn  # TODO move to .env
     SAVE_PATH: DirectoryPath = 'saved'
 
-
 settings = Settings()
