@@ -22,7 +22,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(),
     return JSONResponse({"access_token": access_token, "refresh_token": refresh_token}, status_code=status.HTTP_200_OK)
 
 
-@router.post("/refresh")
+@router.get("/refresh")
 async def refresh(authorize: AuthJWT = Depends()):
     authorize.jwt_refresh_token_required()
     current_user = authorize.get_jwt_subject()
