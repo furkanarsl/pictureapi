@@ -11,8 +11,7 @@ class Settings(BaseSettings):
     authjwt_access_token_expires: Union[timedelta, int]
     authjwt_refresh_token_expires: Union[timedelta, int]
     SQLALCHEMY_DATABASE_URI: PostgresDsn  # TODO move to .env
+    SAVE_PATH: DirectoryPath = 'saved'
 
-
-SAVE_PATH: DirectoryPath = 'saved'
 
 settings = Settings()
