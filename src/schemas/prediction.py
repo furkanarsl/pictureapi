@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 
 class PredictionParameters(BaseModel):
@@ -12,4 +13,4 @@ class Result(BaseModel):
 
 
 class PredictionResult(BaseModel):
-    results: list[Result]
+    results: List[Result]

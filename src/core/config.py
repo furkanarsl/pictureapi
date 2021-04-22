@@ -1,8 +1,7 @@
-import secrets
 from datetime import timedelta
-from typing import Any, Dict, List, Optional, Union
+from typing import Union
 
-from pydantic import AnyHttpUrl, BaseSettings, EmailStr, HttpUrl, PostgresDsn, validator, DirectoryPath
+from pydantic import BaseSettings, PostgresDsn, DirectoryPath
 
 
 class Settings(BaseSettings):

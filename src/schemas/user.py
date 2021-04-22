@@ -1,6 +1,5 @@
 from typing import Optional
 from pydantic import BaseModel, EmailStr
-from tortoise.contrib.pydantic import pydantic_model_creator
 
 
 # Shared properties

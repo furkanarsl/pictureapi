@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
-from sqlalchemy.orm import Session
 
 from src.schemas.user import UserCreate, UserBase
 from fastapi_jwt_auth import AuthJWT

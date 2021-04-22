@@ -1,6 +1,4 @@
-import aiofiles
-from fastapi import FastAPI, WebSocket, Request
-from pydantic import BaseModel
+from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from src.api.v1.api import api_router
@@ -19,15 +17,6 @@ register_tortoise(
     generate_schemas=True,
     add_exception_handlers=True,
 )
-
-
-@app.websocket_route("/ws")
-async def websock(websocket: WebSocket):
-    await websocket.accept()
-    while data := await websocket.receive_bytes():
-        async with aiofiles.open('output.png', "+wb") as out_file:
-            await out_file.write(data)
-    await websocket.send_text("recieved")
 
 
 @app.get("/")

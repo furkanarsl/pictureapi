@@ -1,7 +1,7 @@
 from pydantic import BaseModel
-from tortoise.contrib.pydantic import pydantic_model_creator, pydantic_queryset_creator
+from tortoise.contrib.pydantic import pydantic_queryset_creator
 from datetime import datetime
-
+from typing import List
 
 class LogSchema(BaseModel):
     picture_path: str
@@ -10,7 +10,7 @@ class LogSchema(BaseModel):
 
 
 class LogSchemaListTest(BaseModel):
-    history: list[LogSchema]
+    history: List[LogSchema]
 
 
 from src.models import Log
