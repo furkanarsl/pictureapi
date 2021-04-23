@@ -8,8 +8,7 @@ class PredictionParameters(BaseModel):
 
 
 class Result(BaseModel):
-    name: str
-    ranking: float
+    result: str
 
 
 class PredictionResult(BaseModel):
