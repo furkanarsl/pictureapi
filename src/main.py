@@ -1,11 +1,10 @@
 import jwt
 from src.core.jw_exception import jwt_exception_handler
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI
+
 
 from src.api.v1.api import api_router
 from src.core.config import settings
-from src.core.security import generate_access_token
 from tortoise.contrib.fastapi import register_tortoise
 
 app = FastAPI()
@@ -19,8 +18,3 @@ register_tortoise(
     generate_schemas=True,
     add_exception_handlers=True,
 )
-
-
-@app.get("/")
-def hello():
-    return generate_access_token("user@example.com")
