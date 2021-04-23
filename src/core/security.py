@@ -33,13 +33,15 @@ def generate_token(subject, expire: timedelta = None, type: Literal["access", "r
             "type": type}
 
     encoded_jwt = jwt.encode(
-        data, settings.authjwt_secret_key, algorithm=ALGORITHM)  # TODO CHANGE THIS
+        data, settings.JWT_SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 
-def generate_access_token(subject):
-    return generate_token(subject=subject, type="access")
+def generate_access_token(subject) -> str:
+    expr = settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
+    return generate_token(subject=subject, type="access", expire=expr)
 
 
-def generate_refresh_token(subject):
-    return generate_token(subject=subject, type='refresh')
+def generate_refresh_token(subject) -> str:
+    expr = settings.JWT_REFRESH_TOKEN_EXPIRE_MINUTES
+    return generate_token(subject=subject, type='refresh', expire=expr)
