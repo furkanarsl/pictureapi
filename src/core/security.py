@@ -20,7 +20,7 @@ def get_password_hash(password: str) -> str:
 def generate_token(subject, expire: timedelta = None, type: Literal["access", "refresh"] = "access") -> str:
     issued_at = datetime.utcnow()
     if expire:
-        expire = issued_at + expire
+        expire = issued_at + timedelta(minutes=expire)
     else:
         expire = issued_at + \
             timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)

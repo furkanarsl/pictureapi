@@ -17,7 +17,7 @@ reusable_oauth2 = OAuth2PasswordBearer(
 
 async def get_current_user(token: str = Depends(reusable_oauth2)) -> User:
     payload = jwt.decode(
-        token, settings.authjwt_secret_key, algorithms=[security.ALGORITHM]
+        token, settings.JWT_SECRET_KEY, algorithms=[security.ALGORITHM]
     )
 
     token_data = TokenPayload(**payload)
@@ -30,7 +30,7 @@ async def get_current_user(token: str = Depends(reusable_oauth2)) -> User:
 
 async def access_token_required(token: str = Depends(reusable_oauth2)) -> Token:
     payload = jwt.decode(
-        token, settings.authjwt_secret_key, algorithms=[security.ALGORITHM]
+        token, settings.JWT_SECRET_KEY, algorithms=[security.ALGORITHM]
     )
     token_data = TokenPayload(**payload)
 
@@ -43,7 +43,7 @@ async def access_token_required(token: str = Depends(reusable_oauth2)) -> Token:
 
 async def refresh_token_required(token: str = Depends(reusable_oauth2)):
     payload = jwt.decode(
-        token, settings.authjwt_secret_key, algorithms=[security.ALGORITHM]
+        token, settings.JWT_SECRET_KEY, algorithms=[security.ALGORITHM]
     )
     token_data = TokenPayload(**payload)
     if token_data.type == "refresh":
