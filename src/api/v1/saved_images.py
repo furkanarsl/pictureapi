@@ -1,18 +1,17 @@
 from pathlib import Path
+from src.api.deps import get_current_user
 
 from src.core.config import settings
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import FileResponse
-from fastapi_jwt_auth import AuthJWT
 from src.services import log_service, user_service
+from src.models import User
 
 router = APIRouter()
 
 
-@router.get('/{img_name}')
-async def get_img(img_name, authorize: AuthJWT = Depends()):
-    authorize.jwt_required()
-    user = await user_service.get_by_email(authorize.get_jwt_subject())
+@router.get('/{img_name}', response_class=FileResponse)
+async def get_img(img_name, user: User = Depends(get_current_user)):
     img = await log_service.get_log_by_img(img_name)
 
     if img.user_id != user.id:

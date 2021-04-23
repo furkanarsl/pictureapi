@@ -6,20 +6,20 @@ from hashlib import md5
 import aiofiles
 from fastapi import (APIRouter, Depends, File, HTTPException,
                      UploadFile, status)
-from fastapi_jwt_auth import AuthJWT
+from src.models.user import User
 from src.core.config import settings
 from src.services.result_log import log_service
 from src.services.user import user_service
+from src.api.deps import get_current_user
+from src.schemas.prediction import Result
 
 ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png"]
 router = APIRouter()
 
 
-@router.post("/")
-async def predict_img(file: UploadFile = File(...), authorize: AuthJWT = Depends()):
+@router.post("/", response_model=Result, status_code=200)
+async def predict_img(file: UploadFile = File(...), user: User = Depends(get_current_user)):
     # Do prediction.
-    authorize.jwt_required()
-    user = await user_service.get_by_email(authorize.get_jwt_subject())
 
     try:
         file_name, file_extension = file.filename.split(".")
@@ -36,6 +36,7 @@ async def predict_img(file: UploadFile = File(...), authorize: AuthJWT = Depends
 
     save_path = pathlib.Path(settings.SAVE_PATH) / \
         (str(img_name) + "." + file_extension)
+
     async with aiofiles.open(save_path, 'wb') as out_file:
         while content := await file.read(8388608):  # 16MB
             await out_file.write(content)

@@ -1,14 +1,16 @@
+import jwt
+from src.core.jw_exception import jwt_exception_handler
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 
 from src.api.v1.api import api_router
-from fastapi_jwt_auth import AuthJWT
-from fastapi_jwt_auth.exceptions import AuthJWTException
 from src.core.config import settings
+from src.core.security import generate_access_token
 from tortoise.contrib.fastapi import register_tortoise
 
 app = FastAPI()
 app.include_router(api_router, prefix=settings.API_V1_STR)
+app.add_exception_handler(jwt.PyJWTError, jwt_exception_handler)
 
 register_tortoise(
     app,
@@ -21,17 +23,4 @@ register_tortoise(
 
 @app.get("/")
 def hello():
-    return "Hello World!"
-
-
-@AuthJWT.load_config
-def get_config():
-    return settings
-
-
-@app.exception_handler(AuthJWTException)
-def authjwt_exception_handler(request: Request, exc: AuthJWTException):
-    return JSONResponse(
-        status_code=exc.status_code,
-        content={"detail": exc.message}
-    )
+    return generate_access_token("user@example.com")
