@@ -7,9 +7,8 @@ import aiofiles
 from fastapi import (APIRouter, Depends, File, HTTPException,
                      UploadFile, status)
 from src.models.user import User
+from src.services import log_service
 from src.core.config import settings
-from src.services.result_log import log_service
-from src.services.user import user_service
 from src.api.deps import get_current_user
 from src.schemas.prediction import Result
 
@@ -20,7 +19,6 @@ router = APIRouter()
 @router.post("/", response_model=Result, status_code=200)
 async def predict_img(file: UploadFile = File(...), user: User = Depends(get_current_user)):
     # Do prediction.
-
     try:
         file_name, file_extension = file.filename.split(".")
     except ValueError as e:

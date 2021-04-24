@@ -24,5 +24,5 @@ async def user_history(user: User = Depends(get_current_user), skip: int = 0, li
     # Add the saved path prefix to each log.
     for log in logs:
         log.picture_path = f'{settings.SAVE_PATH}/{log.picture_path}'
-
+        
     return logs
