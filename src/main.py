@@ -1,6 +1,6 @@
 import jwt
 from src.core.jw_exception import jwt_exception_handler
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 
 
 from src.api.v1.api import api_router
@@ -18,3 +18,8 @@ register_tortoise(
     generate_schemas=True,
     add_exception_handlers=True,
 )
+
+
+@app.get("/")
+def hello(request: Request):
+    print(request.base_url)
