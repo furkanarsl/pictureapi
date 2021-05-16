@@ -1,0 +1,45 @@
+version: "3.9"
+services:
+  web:
+    container_name: pictureapp_backend
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - postgres_database
+    restart: unless-stopped
+  postgres_database:
+    container_name: pictureapp_database
+    image: postgres:latest
+    volumes:
+      - /postgres:/postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    restart: unless-stopped
+  pg_admin:
+    container_name: pgadmin_pictureapp
+    image: dpage/pgadmin4:latest
+    depends_on:
+      - postgres_database
+    ports:
+      - 5050:80
+    env_file:
+      - .env
+    restart: unless-stopped
+    logging:
+      driver: "none"
+  redis:
+    image: redis
+    container_name: pictureapp_redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    ports:
+      - 6379:6379
+    volumes:
+      - /redis:/bitnami/redis/data
