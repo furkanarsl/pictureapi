@@ -17,31 +17,37 @@ def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def generate_token(subject, expire: timedelta = None, type: Literal["access", "refresh"] = "access") -> str:
+def generate_token(
+    subject,
+    expire: timedelta = None,
+    type: Literal["access", "refresh", "verify_email"] = "access",
+    **kwargs
+) -> str:
     issued_at = datetime.utcnow()
     if expire:
         expire = issued_at + timedelta(minutes=expire)
     else:
-        expire = issued_at + \
-            timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = issued_at + timedelta(minutes=settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES)
 
-    data = {"sub": subject,
-            "iat": issued_at,
-            "nbf": issued_at,
-            "jti": str(uuid4()),
-            "exp": expire,
-            "type": type}
+    data = {
+        "sub": subject,
+        "iat": issued_at,
+        "nbf": issued_at,
+        "jti": str(uuid4()),
+        "exp": expire,
+        "type": type,
+        **kwargs,
+    }
 
-    encoded_jwt = jwt.encode(
-        data, settings.JWT_SECRET_KEY, algorithm=ALGORITHM)
+    encoded_jwt = jwt.encode(data, settings.JWT_SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 
-def generate_access_token(subject) -> str:
+def generate_access_token(subject, **kwargs) -> str:
     expr = settings.JWT_ACCESS_TOKEN_EXPIRE_MINUTES
-    return generate_token(subject=subject, type="access", expire=expr)
+    return generate_token(subject=subject, type="access", expire=expr, **kwargs)
 
 
-def generate_refresh_token(subject) -> str:
+def generate_refresh_token(subject, **kwargs) -> str:
     expr = settings.JWT_REFRESH_TOKEN_EXPIRE_MINUTES
-    return generate_token(subject=subject, type='refresh', expire=expr)
+    return generate_token(subject=subject, type="refresh", expire=expr, **kwargs)

@@ -6,8 +6,9 @@ from src.models import User
 
 class UserBase(BaseModel):
     email: EmailStr
-    is_active: Optional[bool] = True
-    full_name: Optional[str] = None
+    is_active: Optional[bool] = False
+    name: Optional[str] = None
+    last_name: Optional[str] = None
 
     class Config:
         orm_mode = True
@@ -17,7 +18,8 @@ class UserBase(BaseModel):
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
-    full_name: Optional[str] = None
+    name: Optional[str] = None
+    last_name: Optional[str] = None
 
 
 # Properties to receive via API on update

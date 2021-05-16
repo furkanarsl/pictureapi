@@ -18,7 +18,17 @@ class UserService:
         # user = User(email=obj_in.email, hashed_password=get_password_hash(obj_in.password))
         obj_in = obj_in.dict(exclude_unset=True)
         password = obj_in.pop("password")
-        user = await User.create(**obj_in, hashed_password=get_password_hash(password))
+        user = await User.create(
+            **obj_in,
+            hashed_password=get_password_hash(password),
+            is_active=False,
+            is_superuser=False
+        )
+        return user
+
+    async def change_pass(self, user: User, new_pass: str):
+        user.hashed_password = get_password_hash(new_pass)
+        await user.save()
         return user
 
     async def authenticate(self, email: str, password: str) -> Optional[User]:
@@ -34,6 +44,14 @@ class UserService:
 
     def is_superuser(self, user: User) -> bool:
         return user.is_superuser
+
+    async def verify_user(self, email: str):
+        user = await self.get_by_email(email=email)
+        if not user:
+            return None
+        user.is_active = True
+        await user.save()
+        return user
 
 
 user_service = UserService()
