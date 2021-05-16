@@ -1,6 +1,7 @@
 aiofiles==0.6.0
 aiosqlite==0.16.1
 asyncpg==0.22.0
+bcrypt==3.2.0
 click==7.1.2
 dnspython==2.1.0
 email-validator==1.1.2
@@ -15,6 +16,7 @@ PyJWT==1.7.1
 pypika-tortoise==0.1.0
 python-multipart==0.0.5
 pytz==2020.5
+redis==3.5.3
 six==1.15.0
 SQLAlchemy==1.4.10
 starlette==0.13.6
@@ -22,3 +24,4 @@ toml==0.10.2
 tortoise-orm==0.17.2
 typing-extensions==3.7.4.3
 uvicorn==0.13.4
+emails==0.6
