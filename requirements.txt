@@ -8,6 +8,8 @@ email-validator==1.1.2
 fastapi==0.63.0
 greenlet==1.0.0
 h11==0.12.0
+httpcore==0.13.3
+httpx==0.18.1
 idna==3.1
 iso8601==0.1.14
 passlib==1.7.4
@@ -16,6 +18,7 @@ PyJWT==1.7.1
 pypika-tortoise==0.1.0
 python-multipart==0.0.5
 pytz==2020.5
+psycopg2-binary==2.8.6
 redis==3.5.3
 six==1.15.0
 SQLAlchemy==1.4.10
