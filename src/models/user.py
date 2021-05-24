@@ -8,7 +8,7 @@ class User(Model):
     last_name = fields.TextField(null=True)
     email = fields.CharField(max_length=100, unique=True, index=True, null=False)
     hashed_password = fields.TextField(null=False)
-    is_active = fields.BooleanField(default=True)
+    is_active = fields.BooleanField(default=False)
     is_superuser = fields.BooleanField(default=False)
 
     class PydanticMeta:
