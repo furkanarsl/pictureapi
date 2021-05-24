@@ -11,11 +11,6 @@ class UserService:
         return user
 
     async def create(self, obj_in: UserCreate) -> User:
-        # db_obj = User(email=obj_in.email, hashed_password=get_password_hash(obj_in.password),
-        #               full_name=obj_in.full_name,
-        #               is_superuser=False,
-        #               )
-        # user = User(email=obj_in.email, hashed_password=get_password_hash(obj_in.password))
         obj_in = obj_in.dict(exclude_unset=True)
         password = obj_in.pop("password")
         user = await User.create(
