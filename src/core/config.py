@@ -13,9 +13,10 @@ class Settings(BaseSettings):
     SMTP_HOST: str
     SMTP_PORT: int
     SMTP_TLS = True
-    REDIS_URL: str
-    REDIS_PORT: int
+    REDIS_URL: str = "redis"
+    REDIS_PORT: int = 6379
     API_URL: str = "http://192.168.193.31"
+    PREDICTION_URL: str
 
 
 settings = Settings()
