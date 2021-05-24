@@ -7,8 +7,21 @@ services:
       - "80:80"
     volumes:
       - .:/app
-    env_file:
-      - .env
+    environment:
+      API_V1_STR: "${API_V1_STR}"
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      SQLALCHEMY_DATABASE_URI: ${SQLALCHEMY_DATABASE_URI}
+      SAVE_PATH: ${SAVE_PATH}
+      JWT_ACCESS_TOKEN_EXPIRE_MINUTES: ${JWT_ACCESS_TOKEN_EXPIRE_MINUTES}
+      JWT_REFRESH_TOKEN_EXPIRE_MINUTES: ${JWT_REFRESH_TOKEN_EXPIRE_MINUTES}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      API_URL: ${API_URL}
+      REDIS_URL: ${REDIS_URL}
+      REDIS_PORT: ${REDIS_PORT}
+      PREDICTION_BASE_URL: ${PREDICTION_BASE_URL}
     depends_on:
       - postgres_database
     restart: unless-stopped
@@ -19,8 +32,10 @@ services:
       - /postgres:/postgres
     ports:
       - "5432:5432"
-    env_file:
-      - .env
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     restart: unless-stopped
   pg_admin:
     container_name: pgadmin_pictureapp
@@ -29,8 +44,9 @@ services:
       - postgres_database
     ports:
       - 5050:80
-    env_file:
-      - .env
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     restart: unless-stopped
     logging:
       driver: "none"
