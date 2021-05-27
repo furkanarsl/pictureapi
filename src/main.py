@@ -15,11 +15,11 @@ register_tortoise(
     app,
     db_url=settings.SQLALCHEMY_DATABASE_URI,
     modules={"models": ["src.models"]},
-    generate_schemas=True,
+    generate_schemas=False,
     add_exception_handlers=True,
 )
 
 
 @app.get("/")
 def hello(request: Request):
-    print(request.base_url)
+    return [{"result": "Ok"}]

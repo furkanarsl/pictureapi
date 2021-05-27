@@ -21,7 +21,7 @@ services:
       API_URL: ${API_URL}
       REDIS_URL: ${REDIS_URL}
       REDIS_PORT: ${REDIS_PORT}
-      PREDICTION_BASE_URL: ${PREDICTION_BASE_URL}
+      PREDICTION_URL: ${PREDICTION_URL}
     depends_on:
       - postgres_database
     restart: unless-stopped

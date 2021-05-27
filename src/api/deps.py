@@ -1,14 +1,14 @@
-from fastapi.openapi.models import OAuthFlows
 import jwt
-
-from fastapi.security import OAuth2PasswordBearer
 from fastapi import Depends, HTTPException, status
-from starlette.status import HTTP_401_UNAUTHORIZED, HTTP_422_UNPROCESSABLE_ENTITY
-from src.models import User
-from src.core.config import settings
+from fastapi.openapi.models import OAuthFlows
+from fastapi.security import OAuth2PasswordBearer
 from src.core import security
-from src.services import user_service
+from src.core.config import settings
+from src.models import User
 from src.schemas.token import Token, TokenPayload
+from src.services import user_service
+from starlette.status import (HTTP_401_UNAUTHORIZED,
+                              HTTP_422_UNPROCESSABLE_ENTITY)
 
 reusable_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/login/")
 
@@ -58,7 +58,7 @@ async def refresh_token_required(token: str = Depends(reusable_oauth2)):
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
             detail="Only refresh tokens are allowed.",
         )
-    return token
+    return token_data
 
 
 async def get_current_user(token: str = Depends(access_token_required)) -> User:
