@@ -1,7 +1,7 @@
 from typing import Optional
 
 from src.models.user import User
-from src.schemas.user import UserCreate
+from src.schemas.user import UserCreate, UserUpdateInfo
 from src.core.security import get_password_hash, verify_password
 
 
@@ -45,6 +45,13 @@ class UserService:
         if not user:
             return None
         user.is_active = True
+        await user.save()
+        return user
+
+    async def change_info(self, user: User, user_info: UserUpdateInfo):
+        obj_in = user_info.dict(exclude_unset=True)
+
+        await user.update_from_dict(obj_in)
         await user.save()
         return user
 
