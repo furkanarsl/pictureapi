@@ -11,6 +11,7 @@ from src.core.config import settings
 from src.api.deps import get_current_user
 from src.schemas.prediction import Result
 import httpx
+from src.core.config import settings
 
 ALLOWED_EXTENSIONS = ["jpg", "jpeg", "png"]
 router = APIRouter()
@@ -45,7 +46,7 @@ async def predict_img(
     files = {"file": open(save_path, "rb")}
     async with httpx.AsyncClient() as client:
         response = await client.post(
-            "http://host.docker.internal:8000/", files=files, timeout=1000000
+            settings.PREDICTION_URL, files=files, timeout=1000000
         )
     res = response.json()
 
