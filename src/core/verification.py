@@ -25,26 +25,6 @@ def send_mail(subject: str, to: str, text: str, mail_from: str = settings.SMTP_U
     logging.info(f"send email result: {response}")
 
 
-# def send_email_verificaton(to: str):
-#     token = generate_token(subject=to, expire=10_080, type="verify_email").decode(
-#         "UTF-8"
-#     )
-#     verify_link = settings.API_URL + f"/api/v1/auth/verify_email/{token}"
-#     subj = "Verify your email address."
-#     msg = f"Please click the following link to verify your Pictureapp account: \n {verify_link}"
-#     # send_mail(subject=subj, to=to, text=msg)
-
-
-# def send_password_reset_token(to: str):
-#     token = generate_token(subject=to, expire=1440, type="password_reset").decode(
-#         "UTF-8"
-#     )
-#     verify_link = settings.API_URL + f"/api/v1/auth/reset_password/{token}"
-#     subj = "Pictureapp password reset request."
-#     msg = f"Use this code for resetting your password: \n "
-#     # send_mail(subject=subj, to=to, text=msg)
-
-
 def send_email_verificaton_token(to: str):
     valid_token = False
     while not valid_token:
