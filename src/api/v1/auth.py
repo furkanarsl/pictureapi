@@ -16,6 +16,7 @@ from src.schemas.token import (
     LoginToken,
     ResetPasswordRequest,
     Token,
+    TokenPayload,
     VerifyEmail,
     ResetPassword,
     ChangePassword,
@@ -56,11 +57,8 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.get("/refresh", response_model=Token, status_code=200)
-async def refresh(
-    token: Token = Depends(refresh_token_required),
-    user: User = Depends(get_current_user),
-):
-    access_token = generate_access_token(subject=user.email, is_active=user.is_active)
+async def refresh(token: TokenPayload = Depends(refresh_token_required)):
+    access_token = generate_access_token(subject=token.sub, is_active=token.is_active)
     return Token(access_token=access_token)
 
 
