@@ -39,7 +39,7 @@ async def predict_img(
     )
 
     async with aiofiles.open(save_path, "wb") as out_file:
-        while content := await file.read(8388608):  # 16MB
+        while content := await file.read(8388608):
             await out_file.write(content)
 
     files = {"file": open(save_path, "rb")}
@@ -47,7 +47,7 @@ async def predict_img(
         response = await client.post(
             "http://host.docker.internal:8000/", files=files, timeout=1000000
         )
-    print(response.json())
+    res = response.json()
 
-    await log_service.create(user.id, 123, (img_name + "." + file_extension))
-    return {"result": "123"}
+    await log_service.create(user.id, res["result"], (img_name + "." + file_extension))
+    return {"result": res["result"]}
